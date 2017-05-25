@@ -140,7 +140,6 @@
       var cnt = 0;
       var colIndex = 0;
       for (let i = place; i <= this.get('n') - place; i++) {
-        console.log(this._getFirstRowColumnIndexForMajorDiagonalOn(i, i));
         if (table[i][colIndex] === 1) {
           res++;
         }
@@ -188,15 +187,54 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+    
+      var place = minorDiagonalColumnIndexAtFirstRow;
+      var table = this.attributes;
 
-
-
-      return false; // fixme
+      var cnt = 0;
+      var rowIndex = 0;
+      for (let i = place; i <= this.get('n') - place; i++) {
+        if (table[rowIndex][i] === 1) {
+          res++;
+        }
+        cnt++;
+      }
+      return res > 1;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      // _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex) {
+      //   return colIndex + rowIndex;
+      // },
+
+      // col + row input  6: no iteration
+      // col + row input  5: iterate [3][2], [2][3]
+      // col + row input  4: iterate [1][3], [2][2], [3][1]
+      // col + row input  3: iterate [0][3], [1][2], [2][1], [3][0]
+      // col + row input  2: iterate [0][2], [1][1], [2][0]
+      // col + row input  1: iterate [0][1], [1][0]
+      // col + row input  0: no iteration
+
+      var table = this.attributes;
+      var results = {};
+
+      for (let row = 0; row < this.get('n'); row++) {
+        for (let col = 0; col < this.get('n'); col++) {
+          var locator = this._getFirstRowColumnIndexForMinorDiagonalOn(row, col);
+          if (!results[locator]) {
+            results[locator] = table[row][col];
+          } else {
+            results[locator] += table[row][col];
+          }
+        }
+      }
+      for (var key in results) {
+        if (results[key] > 1) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
