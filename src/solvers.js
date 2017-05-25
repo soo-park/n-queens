@@ -17,6 +17,25 @@
 
 window.findNRooksSolution = function(n) {
   var solution = undefined; //fixme
+  var locations = [];
+
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      locations.add([i, j]);
+    }
+  }
+
+  console.log(locations);
+
+  // I find a board that does not have any conflict
+  // I put the first rook on the first place
+
+  // x all the places that I cannot go
+    // if one rook is put in a spot all spots with same row null
+    // all spots with same column null
+
+  // i put the second one to the first empty place
+  // repeat n times
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
