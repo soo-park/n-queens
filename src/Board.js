@@ -129,20 +129,58 @@
     },
 
 
-
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var place = majorDiagonalColumnIndexAtFirstRow;
+      var table = this.attributes;
+
+      var cnt = 0;
+      var colIndex = 0;
+      for (let i = place; i <= this.get('n') - place; i++) {
+        console.log(this._getFirstRowColumnIndexForMajorDiagonalOn(i, i));
+        if (table[i][colIndex] === 1) {
+          res++;
+        }
+        cnt++;
+      }
+      return res > 1;
+
     },
+
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
-    },
+      // col - row input -3: no iteration
+      // col - row input -2: iterate [2][0], [3][1]
+      // col - row input -1: iterate [1][0], [2][1], [3][2]
+      // col - row input  0: iterate [0][0], [1][1], [2][2], [3][3]
+      // col - row input  1: iterate [0][1], [1][2], [2][3]
+      // col - row input  2: iterate [0][2], [1][3]
+      // col - row input  3: no iteration
 
+      var table = this.attributes;
+      var results = {};
+
+      for (let row = 0; row < this.get('n'); row++) {
+        for (let col = 0; col < this.get('n'); col++) {
+          var locator = this._getFirstRowColumnIndexForMajorDiagonalOn(row, col);
+          if (!results[locator]) {
+            results[locator] = table[row][col];
+          } else {
+            results[locator] += table[row][col];
+          }
+        }
+      }
+      for (var key in results) {
+        if (results[key] > 1) {
+          return true;
+        }
+      }
+      return false;
+    },
 
 
     // Minor Diagonals - go from top-right to bottom-left
@@ -150,6 +188,9 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
+
+
+
       return false; // fixme
     },
 
