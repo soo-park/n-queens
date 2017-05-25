@@ -17,48 +17,23 @@
 window.findNRooksSolution = function(n) {
 
   var arrBoard = [];
+  var size = n;
+  var newBoard = new Board({'n': size});
+  // var rookOne = newBoard.togglePiece(0, 0); 
 
-  var boardToggle = function() {
+  for (var row = 0; row < n; row++) {
+    for (var col = 0; col < n; col++) {
+      newBoard.togglePiece(row, col); // placing rook
+      if (newBoard.hasAnyRooksConflicts()) { // if conflict
+        newBoard.togglePiece(row, col);  // toggle rook off
+      }  
+    }  
+  }
 
-    if (arrBoard.length === 0) {
-      for (let i = 0; i < n; i++) {
-        var row = [];
-        for (let j = 0; j < n; j++) {
-          row.push[0];
-        }
-        arrBoard.push(row);
-      }
-    }
-
-    // set up a counter for a board
-    var cnt = 0;
-
-    var toggle = function(arrBoard) {
-      // if there are less than n pieces, turn one on
-      if (cnt < n) {
-        for (let i = 0; i < n; i++) {
-          for (let j = 0; j < n; j++) {
-            arrBoard[i][j] = 1;
-            arrBoard = arrBoard[i][j];
-          }
-        }      
-      }
-      cnt++;
-      return toggle(arrBoard);
-    };
-
-    arrBoard = toggle(arrBoard);
-    arrBoardObj = new Board(arrBoard);
-
-    if (!arrBoardObj.hasAnyColConflicts() && !arrBoardObj.hasAnyRowConflicts()) {
-      solution = arrBoard;
-      return solution;
-    }
-  };
-
-  var solution = undefined; // fix me
+  var solution = newBoard.rows(); 
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
+
   return solution;
 };
 
